@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,11 @@ namespace JwtBearerTokenAuthentication.Controllers
     [Route("[controller]")]
     public class TokenController : ControllerBase
     {
+        [AllowAnonymous]
         [HttpGet("/Token")]
         public IActionResult GenerateToken()
         {
-            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString()));
+            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("A970556E-583C-4833-89D7-FD2D74ABE8E4"));
             SigningCredentials signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);
 
             var subject = new List<Claim>

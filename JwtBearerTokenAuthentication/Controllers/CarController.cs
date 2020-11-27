@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace JwtBearerTokenAuthentication.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class CarController : ControllerBase
     {

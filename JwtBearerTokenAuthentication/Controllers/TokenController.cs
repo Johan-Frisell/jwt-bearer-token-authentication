@@ -15,8 +15,8 @@ namespace JwtBearerTokenAuthentication.Controllers
         [HttpGet("/Token")]
         public IActionResult GenerateToken()
         {
-            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString()));
-            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString()));
+            SigningCredentials signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);
 
             var subject = new List<Claim>
             {
@@ -35,15 +35,15 @@ namespace JwtBearerTokenAuthentication.Controllers
                 Claims = claims,
                 Subject = new ClaimsIdentity(subject),
                 Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds,
+                SigningCredentials = signingCredentials,
                 Issuer = "localhost",
                 Audience = "user"
             };
 
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken = jwtSecurityTokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(tokenHandler.WriteToken(token));
+            return Ok(jwtSecurityTokenHandler.WriteToken(securityToken));
         }
     }
 }

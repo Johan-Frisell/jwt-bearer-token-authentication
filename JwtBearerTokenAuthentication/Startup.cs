@@ -65,6 +65,17 @@ namespace JwtBearerTokenAuthentication
                     };
                 });
 
+            services.AddAuthorization(
+                options =>
+                {
+                    options.AddPolicy(
+                        "RolePolicy", 
+                        policy => policy.RequireRole("UserWithRole"));
+                    options.AddPolicy(
+                        "SpecialClaimPolicy", 
+                        policy => policy.RequireClaim("SpecialClaim", new List<string>() { "SpecialClaim_test" }));
+                });
+
             services.AddControllers();
         }
 

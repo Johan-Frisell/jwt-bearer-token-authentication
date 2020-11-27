@@ -10,10 +10,28 @@ namespace JwtBearerTokenAuthentication.Controllers
     [Route("[controller]")]
     public class CarController : ControllerBase
     {
-        [HttpGet("/Cars")]
-        public IActionResult Index()
+        [HttpGet("/CarsRequireToken")]
+        public IActionResult GetCarsForToken()
         {
-            var cars = new List<string>() { "BMW", "OPEL", "KIA" };
+            var cars = new List<string>() { "SCODA", "VW", "KIA" };
+
+            return Ok(JsonConvert.SerializeObject(cars));
+        }
+
+        [HttpGet("/CarsRequireTokenWithRole")]
+        [Authorize(Policy = "RolePolicy")]
+        public IActionResult GetCarsForRole()
+        {
+            var cars = new List<string>() { "BMW", "PORCHE" };
+
+            return Ok(JsonConvert.SerializeObject(cars));
+        }
+
+        [HttpGet("/CarsRequireTokenWithSpecialClaim")]
+        [Authorize(Policy = "SpecialClaimPolicy")]
+        public IActionResult GetCarsForSpecialClaim()
+        {
+            var cars = new List<string>() { "LAMBORGHINI" };
 
             return Ok(JsonConvert.SerializeObject(cars));
         }
